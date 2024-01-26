@@ -8,7 +8,7 @@ import slugify from "slugify";
 const buildSlug = (question) => {
   question = question.split(' ').slice(0, 10).join(' ');
   const slug = slugify(question, { lower: true, strict: true });
-  return "pytanie/" + slug;
+  return "/pytanie/" + slug;
 }
 
 
