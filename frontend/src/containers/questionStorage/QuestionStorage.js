@@ -5,10 +5,10 @@ import CategoryFilter from "../../components/filters/categoryFilter";
 import slugify from "slugify";
 
 
-const buildSlug = (question) => {
+const buildSlug = (question, question_no) => {
   question = question.split(' ').slice(0, 10).join(' ');
   const slug = slugify(question, { lower: true, strict: true });
-  return "/pytanie/" + slug;
+  return "/pytanie/" + slug + ',' + question_no;
 }
 
 
@@ -16,7 +16,7 @@ const QuestionStorage = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(1);
-  const [pages, setPages] = useState(null);
+  const [pages, setPages] = useState(0);
 
   useEffect(() => {
     setQuestions([])
@@ -45,9 +45,9 @@ const QuestionStorage = () => {
         <CategoryFilter selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} />
       </div>
       <List sx={{ my: "2rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", }} >
-        {questions.map((question) => (
-          <ListItem key={question.id} sx={{ padding: "1.3rem", mb: "0.5rem", border: "blue 1px solid", width: "90%", borderRadius: 10 }}>
-            <Typography fontWeight={500} component="p" variant="p"><Link href={buildSlug(question.text)}>{question.text}</Link></Typography>
+        {questions.map((question, idx) => (
+          <ListItem key={idx} sx={{ padding: "1.3rem", mb: "0.5rem", border: "blue 1px solid", width: "90%", borderRadius: 10 }}>
+            <Typography fontWeight={500} component="p" variant="p"><Link href={buildSlug(question.text, question.question_no)}>{question.text}</Link></Typography>
           </ListItem>
         ))
         }
