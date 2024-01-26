@@ -6,11 +6,24 @@ import QuestionStorage from './containers/questionStorage/QuestionStorage';
 import Login from './containers/user/Login';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import SingleQuestion from './containers/singleQuestion/SingleQuestion';
+
+
+const questionLoader = (props) => {
+  const question_no = props.params.slug.split(',')[1];
+  return fetch('http://localhost:8000/api/questions/' + question_no + '/?language=pl').then(response => response.json());
+}
+
 
 const router = createBrowserRouter([
   { path: '/', element: <App />, children: [
     { path: 'zaloguj', element: <Login /> },
-    { path: 'baza-pytan', element: <QuestionStorage />}
+    { path: 'baza-pytan', element: <QuestionStorage />},
+    { 
+      path: 'pytanie/:slug',
+      element: <SingleQuestion />,
+      loader: async (props) => questionLoader(props),
+    },
   ]},
 ])
 
