@@ -5,7 +5,7 @@ from .models import Question, Category
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['name', ]
+        fields = '__all__'
 
 
 class QuestionSerializer(serializers.ModelSerializer):
