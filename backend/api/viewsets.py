@@ -1,5 +1,5 @@
 from .models import Question, Category
-from .serializers import QuestionSerializer, CategorySerializer
+from .serializers import QuestionSerializer, CategorySerializer, DetailedQuestionSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
 
@@ -14,6 +14,7 @@ class QuestionViewSet(ModelViewSet):
     serializer_class = QuestionSerializer
     pagination_class = StandardResultsSetPagination
     ordering_fields = ['language', 'categories']
+    lookup_field = 'question_no'
 
     # queryset = Question.objects.all()
 
@@ -29,6 +30,11 @@ class QuestionViewSet(ModelViewSet):
             categories = Category.objects.filter(name__in=categories_raw.split(','))
             queryset = queryset.filter(categories__in=categories)
         return queryset
+
+    def get_serializer_class(self):
+        if self.lookup_field in self.kwargs:
+            return DetailedQuestionSerializer
+        return QuestionSerializer
 
 
 class CategoryViewSet(ModelViewSet):

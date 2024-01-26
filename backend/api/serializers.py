@@ -13,4 +13,12 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ['id', 'categories', 'text']
+        fields = ['id', 'question_no', 'categories', 'text']
+
+
+class DetailedQuestionSerializer(serializers.ModelSerializer):
+    categories = CategorySerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Question
+        fields = '__all__'
