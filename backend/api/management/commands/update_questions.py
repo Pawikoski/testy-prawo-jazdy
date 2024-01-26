@@ -6,6 +6,11 @@ from api.models import Question, Category
 
 
 class Command(BaseCommand):
+    def convert_nan_str_to_none(self, value: Any) -> Any:
+        if value == "nan":
+            return None
+        return value
+
     def handle(self, *args: Any, **options: Any) -> str | None:
         xslx_url = "https://www.gov.pl/attachment/1e683ccd-6293-4656-9c16-fab2628b0c46"
         df = pd.read_excel(xslx_url, sheet_name="Arkusz1")
@@ -48,11 +53,11 @@ class Command(BaseCommand):
                         question_no=question_no,
                         language=lang,
                         text=multilang_data[lang]["question"],
-                        answer_a=multilang_data[lang]["answer_a"],
-                        answer_b=multilang_data[lang]["answer_b"],
-                        answer_c=multilang_data[lang]["answer_c"],
+                        answer_a=self.convert_nan_str_to_none(multilang_data[lang]["answer_a"]),
+                        answer_b=self.convert_nan_str_to_none(multilang_data[lang]["answer_b"]),
+                        answer_c=self.convert_nan_str_to_none(multilang_data[lang]["answer_c"]),
                         correct_answer=valid_answer,
-                        media=media,
+                        media=self.convert_nan_str_to_none(media),
                         question_source=source,
                         security_explenation=security_explenation,
                     )
