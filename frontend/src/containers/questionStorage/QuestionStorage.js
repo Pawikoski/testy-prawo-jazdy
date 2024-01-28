@@ -1,8 +1,12 @@
 import "./questionStorage.css";
 import { useEffect, useState } from "react";
-import { List, ListItem, Typography, Pagination, Stack, Link } from "@mui/material";
-import CategoryFilter from "../../components/filters/categoryFilter";
 import slugify from "slugify";
+import { Pagination, Stack } from "@mui/material";
+import Badge from "react-bootstrap/Badge";
+import CategoryFilter from "../../components/filters/categoryFilter";
+import Container from "react-bootstrap/Container";
+import ListGroup from "react-bootstrap/ListGroup";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 
 const buildSlug = (question, question_no) => {
@@ -11,9 +15,9 @@ const buildSlug = (question, question_no) => {
   return "/pytanie/" + slug + ',' + question_no;
 }
 
-
 const QuestionStorage = () => {
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const selectedStorageCategories = JSON.parse(localStorage.getItem('selectedCategories'));
+  const [selectedCategories, setSelectedCategories] = useState(selectedStorageCategories);
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(0);
@@ -24,6 +28,7 @@ const QuestionStorage = () => {
       page: page,
       language: 'pl'
     });
+    localStorage.setItem('selectedCategories', JSON.stringify(selectedCategories))
     if (selectedCategories.length > 0) {
       params.append('categories', selectedCategories.join(','));
     }
@@ -39,23 +44,42 @@ const QuestionStorage = () => {
   }, [selectedCategories, page]);
 
   return (
-    <div>
-      <Typography component="h1" variant="h3" sx={{ textAlign: "center", my: 4 }}>Baza pytań</Typography>
+    <Container>
+      <Breadcrumb>
+        <Breadcrumb.Item href="/">Prawo Jazdy</Breadcrumb.Item>
+        <Breadcrumb.Item active>Pytania</Breadcrumb.Item>
+      </Breadcrumb>
+      <h3>Baza pytań</h3>
       <div className="filters">
         <CategoryFilter selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} />
       </div>
-      <List sx={{ my: "2rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", }} >
+      <ListGroup as="ul">
         {questions.map((question, idx) => (
-          <ListItem key={idx} sx={{ padding: "1.3rem", mb: "0.5rem", border: "blue 1px solid", width: "90%", borderRadius: 10 }}>
-            <Typography fontWeight={500} component="p" variant="p"><Link href={buildSlug(question.text, question.question_no)}>{question.text}</Link></Typography>
-          </ListItem>
+          <ListGroup.Item key={idx} as="li" className="d-flex justify-content-between align-items-start py-3" action>
+            <div className="ms-2 me-auto">
+                <a className="text-black fw-bold text-decoration-none" href={buildSlug(question.text, question.question_no)}>{question.text}</a>
+            {
+                question.answer_a &&
+                <div className="d-flex flex-row justify-content-start flex-wrap">
+                  <div className="me-2"><Badge bg="secondary" pill>A. {question.answer_a}</Badge></div>
+                  <div className="me-2"><Badge bg="secondary" pill>B. {question.answer_b}</Badge></div>
+                  <div className="me-2"><Badge bg="secondary" pill>C. {question.answer_c}</Badge></div>
+                </div>
+              }
+            </div>
+            <Badge bg="primary" pill>
+              {question.correct_answer}
+            </Badge>
+          </ListGroup.Item>
         ))
         }
+      </ListGroup>
+      <div className="d-flex justify-content-center">
         <Stack spacing={2} mt="2rem">
           <Pagination onChange={(e, v) => setPage(v)} count={pages} color="primary" />
         </Stack>
-      </List>
-    </div>
+      </div>
+    </Container>
   );
 }
 
