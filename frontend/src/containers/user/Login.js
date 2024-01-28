@@ -1,17 +1,7 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-
+import "./Login.css";
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Button from "react-bootstrap/esm/Button";
 
 export default function Login() {
   const handleSubmit = (event) => {
@@ -25,86 +15,46 @@ export default function Login() {
   const image = require('../../assets/img/driving-test.jpg');
 
   return (
-    <Grid container component="main" sx={{ height: '100vh' }}>
-      <CssBaseline />
-      <Grid
-        item
-        xs={false}
-        sm={4}
-        md={7}
-        sx={{
-          backgroundImage: 'url(' + image + ')',
-          backgroundRepeat: 'no-repeat',
-          backgroundColor: (t) =>
-            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <Box
-          sx={{
-            my: 8,
-            mx: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Zaloguj się
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Adres e-mail"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Hasło"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Zapamiętaj mnie"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Zaloguj się
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Zapomniałeś hasła?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Nie masz konta? Zarejestruj się"}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Grid>
-    </Grid>
+    <Container>
+      <div className="d-lg-flex half">
+        <div className="bg order-1 order-md-2" style={{ backgroundImage: "url(" + image + ")", backgroundSize: "cover" }}></div>
+        <div className="contents order-2 order-md-1">
+          <div className="container">
+            <div className="row align-items-center justify-content-center">
+              <div className="col-md-9">
+                <div className="mb-4">
+                  <h3>Zaloguj się</h3>
+                  <p className="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>
+                </div>
+                <Form action="#" method="post" onSubmit={handleSubmit}>
+                  <Form.Group className="mb-3">
+                    <Form.Label for="email">Adres e-mail</Form.Label>
+                    <Form.Control type="email" placeholder="E-mail" />
+                  </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label for="password">Hasło</Form.Label>
+                    <Form.Control type="password" placeholder="Hasło" />
+                  </Form.Group>
+                  <div className="d-flex mb-5 justify-content-between flex-row">
+                    <Form.Check label="Zapamiętaj mnie" title="Zapamiętaj mnie" className="mb-0" />
+                    <span className="ml-auto"><a href="#" className="forgot-pass">Forgot Password</a></span>
+                  </div>
+                  <Button variant="primary" type="submit" className="w-100">Zaloguj się</Button>
+                  <span className="d-block text-center my-4 text-muted">— or —</span>
+                  <div className="social-login">
+                    <Button as="a" href="#" variant="link" className="facebook btn d-flex justify-content-center align-items-center">
+                      Zaloguj przez: Facebook
+                    </Button>
+                    <Button as="a" href="#" variant="link" className="google btn d-flex justify-content-center align-items-center">
+                      Zaloguj przez: Google
+                    </Button>
+                  </div>
+                </Form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
   );
 }
