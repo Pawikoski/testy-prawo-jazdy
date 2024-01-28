@@ -36,7 +36,7 @@ const pages = [
 
 const Header = () => {
   return (
-    <Navbar expand="lg" className="bg-body-tertiary justify-content-between">
+    <Navbar expand="lg" className="bg-body-tertiary justify-content-between mb-5">
       <Container><div><Navbar.Brand href="/">Prawo Jazdy</Navbar.Brand></div>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className='navbar-elements'>
