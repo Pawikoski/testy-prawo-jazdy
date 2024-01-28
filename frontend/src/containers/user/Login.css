@@ -1,0 +1,128 @@
+
+.half .bg {
+    width: 50%;
+}
+
+@media (max-width: 991.98px) {
+    .half .bg {
+        height: 400px;
+        width: 100%;
+    }
+}
+
+.contents {
+    padding-top: 6%;
+    padding-bottom: 6%;
+}
+
+@media (max-width: 1199.98px) {
+    .half .contents .bg {
+        width: 100%;
+    }
+}
+
+.half .contents .bg {
+    overflow: hidden;
+    margin-bottom: 0;
+    border: 1px solid #413a3a;
+    padding: 15px 15px;
+    border-bottom: none;
+    position: relative;
+}
+
+.half .contents .bg {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    -webkit-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    transition: .3s all ease;
+}
+
+
+
+.half .contents .bg  {
+    font-size: 12px;
+    display: block;
+    margin-bottom: 0;
+    color: #b3b3b3;
+}
+
+.half .contents .bg {
+    margin-top: -20px;
+}
+
+.half .contents .bg {
+    border: none;
+    padding: 0;
+    font-size: 20px;
+    border-radius: 0;
+}
+
+.half .contents .bg {
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.half .bg {
+    background-size: cover;
+    background-position: center;
+}
+
+.half a {
+    color: #888;
+    text-decoration: underline;
+}
+
+.half .btn {
+    height: 54px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.half .forgot-pass {
+    position: relative;
+    top: 2px;
+    font-size: 14px;
+}
+
+.social-login a {
+    display: block;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.social-login a:hover {
+    color: #fff;
+}
+
+.social-login a.facebook {
+    background: #3b5998;
+}
+
+.social-login a.facebook:hover {
+    background: #344e86;
+}
+
+.social-login a.twitter {
+    background: #1da1f2;
+}
+
+.social-login a.twitter:hover {
+    background: #0d95e8;
+}
+
+.social-login a.google {
+    background: #ea4335;
+}
+
+.social-login a.google:hover {
+    background: #e82e1e;
+}
