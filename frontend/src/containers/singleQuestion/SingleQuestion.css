@@ -1,0 +1,30 @@
+.media {
+    margin-right: 3rem;
+}
+
+.question-wrapper {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+@media (max-width: 1200px) {
+    .question-wrapper .media {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+@media (max-width: 1400px) {
+    .question-wrapper .media {
+        margin-right: 2rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .question-wrapper {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+    }
+    
+}
