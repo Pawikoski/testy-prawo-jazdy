@@ -36,11 +36,11 @@ const Section = ({ title, links }) => {
 const Footer = () => {
   return (
     <Container>
-      <footer className="py-5">
+      <footer className='mt-5'>
         <div className="row">
           <Section title="Prawo Jazdy" links={[{ name: 'O nas', href: '/o-nas' }, { name: 'Kontakt', href: '/kontakt' }, { name: 'Regulamin', href: '/regulamin' }, { name: 'Polityka prywatności', href: '/polityka-prywatnosci' }]} />
-          <Section title="Prawo Jazdy" links={[{ name: 'O nas', href: '/o-nas' }, { name: 'Kontakt', href: '/kontakt' }, { name: 'Regulamin', href: '/regulamin' }, { name: 'Polityka prywatności', href: '/polityka-prywatnosci' }]} />
-          <Section title="Prawo Jazdy" links={[{ name: 'O nas', href: '/o-nas' }, { name: 'Kontakt', href: '/kontakt' }, { name: 'Regulamin', href: '/regulamin' }, { name: 'Polityka prywatności', href: '/polityka-prywatnosci' }]} />
+          <Section title="Popularne pytania" links={[{ name: 'O nas', href: '/o-nas' }, { name: 'Kontakt', href: '/kontakt' }, { name: 'Regulamin', href: '/regulamin' }, { name: 'Polityka prywatności', href: '/polityka-prywatnosci' }]} />
+          <Section title="Losowe pytania" links={[{ name: 'O nas', href: '/o-nas' }, { name: 'Kontakt', href: '/kontakt' }, { name: 'Regulamin', href: '/regulamin' }, { name: 'Polityka prywatności', href: '/polityka-prywatnosci' }]} />
           <NewsletterForm />
         </div>
 
