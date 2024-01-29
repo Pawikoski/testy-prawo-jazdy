@@ -30,3 +30,11 @@ class Question(models.Model):
     categories = models.ManyToManyField(Category, related_name='questions')
     question_source = models.TextField(blank=True, null=True)
     security_explenation = models.TextField(blank=True, null=True)
+
+
+class ContactMessage(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)

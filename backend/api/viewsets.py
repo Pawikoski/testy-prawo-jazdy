@@ -1,9 +1,13 @@
 import random
 
-from .models import Question, Category
-from .serializers import QuestionSerializer, CategorySerializer, DetailedQuestionSerializer
-from rest_framework.viewsets import ModelViewSet
+from .models import Question, Category, ContactMessage
+from .serializers import QuestionSerializer, CategorySerializer, DetailedQuestionSerializer, ContactMessageSerializer
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.mixins import CreateModelMixin
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import AllowAny
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -47,3 +51,16 @@ class QuestionViewSet(ModelViewSet):
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+
+
+class ContactMessageViewSet(GenericViewSet, CreateModelMixin):
+    serializer_class = ContactMessageSerializer
+    queryset = ContactMessage.objects.all()
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
