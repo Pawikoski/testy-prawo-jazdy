@@ -11,11 +11,12 @@ import SingleQuestion from './containers/singleQuestion/SingleQuestion';
 import Contact from './containers/contact/Contact';
 import NotFound from './containers/NotFound';
 import Faq from './containers/faq/Faq';
-import Blog from './containers/blog/Blog';
+import BlogHome from './containers/blog/BlogHome';
 import RandomQuestion from './containers/randomQuestion/RandomQuestion';
 import CategoryLandingPage from './containers/categoryLandingPage/CategoryLandingPage';
 import AllCategories from './containers/allCategories/AllCategories';
 import Register from './containers/user/Register';
+import Article from './containers/blog/Article';
 
 
 const questionLoader = (props) => {
@@ -49,7 +50,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'blog',
-        element: <Blog />
+        element: <BlogHome />
+      },
+      {
+        path: ':blog-category/:slug',
+        element: <Article />
       },
       {
         path: 'prawo-jazdy/wszystkie-kategorie',
