@@ -4,6 +4,7 @@ import Container from "react-bootstrap/Container";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
+import CommentSection from '../../components/comments/CommentSection';
 
 
 const SingleQuestion = (slug) => {
@@ -45,6 +46,8 @@ const SingleQuestion = (slug) => {
         <Button variant="success">Pytanie {question.id} / 5000</Button>
         <Button>Następne pytanie</Button>
       </div>
+      <hr className='my-5' />
+      <CommentSection />
     </Container>
   );
 }
