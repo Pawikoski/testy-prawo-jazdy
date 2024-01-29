@@ -32,16 +32,15 @@ const CategoryFilter = ({ selectedCategories, setSelectedCategories }) => {
     setSelectedCategories(
       typeof value === 'string' ? value.split(',') : value,
     );
-    console.log(selectedCategories)
   };
 
   return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-checkbox-label">Wybierz kategorie</InputLabel>
+        <InputLabel id="category-filter-label">Wybierz kategorie</InputLabel>
         <Select
-          labelId="demo-multiple-checkbox-label"
-          id="demo-multiple-checkbox"
+          labelId="category-filter-label"
+          id="category-filter"
           multiple
           value={selectedCategories}
           onChange={handleChange}
