@@ -1,10 +1,10 @@
 import './Header.css';
 import Container from 'react-bootstrap/Container';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/Button';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 const pages = [
   { 'name': 'Baza pytań', 'href': '/baza-pytan' },
@@ -34,10 +34,34 @@ const pages = [
   { 'name': 'Kontakt', 'href': '/kontakt' }
 ];
 
+const LoginButtons = ({ className }) => {
+  const loggedIn = Math.random() > 0.5; // TODO:
+  return (
+    loggedIn ?
+      <Dropdown className={"flex-shrink-0 " + className}>
+        <Dropdown.Toggle variant="link" href="#" className="link-dark text-decoration-none" id="dropdown-user">
+          <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" className="rounded-circle" />
+        </Dropdown.Toggle>
+        <Dropdown.Menu className="dropdown-menu text-small shadow" aria-labelledby="dropdown-user">
+          <Dropdown.Item className="dropdown-item" href="#">New project...</Dropdown.Item>
+          <Dropdown.Item className="dropdown-item" href="#">Profile</Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item className="dropdown-item" href="#">Settings</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+      :
+      <div className={"flex-shrink-0" + " " + className}>
+        <Button as="a" href="/logowanie" variant='outline-primary' className="me-2">Zaloguj</Button>
+        <Button as="a" href="/rejestracja" variant='primary'>Zarejestruj</Button>
+      </div>
+  );
+}
+
 const Header = () => {
   return (
-    <Navbar expand="lg" className="bg-body-tertiary justify-content-between mb-5">
-      <Container><div><Navbar.Brand href="/">Prawo Jazdy</Navbar.Brand></div>
+    <Navbar expand="lg" className="bg-body-tertiary justify-content-between mb-5 py-3 border-bottom">
+      <Container>
+        <div><Navbar.Brand href="/">Prawo Jazdy</Navbar.Brand></div>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className='navbar-elements'>
           <Nav className="me-auto">
@@ -45,7 +69,7 @@ const Header = () => {
               pages.map(
                 (page) => (
                   page.children ?
-                    <NavDropdown style={{ border: "1px" }} title="Kategorie" id="basic-nav-dropdown">
+                    <NavDropdown style={{ border: "1px" }} title="Kategorie" id="basic-nav-dropdown" className='me-lg-2 me-xl-3'>
                       {
                         page.children.map((child) => (
                           <NavDropdown.Item href={child.href}>{child.name}</NavDropdown.Item>
@@ -53,19 +77,13 @@ const Header = () => {
                       }
                     </NavDropdown>
                     :
-                    <Nav.Link title={page.name} href={page.href}>{page.name}</Nav.Link>
+                    <Nav.Link title={page.name} href={page.href} className='me-lg-2 me-xl-3'>{page.name}</Nav.Link>
                 ))
             }
           </Nav>
-          <ButtonGroup className='mobile-buttons'>
-            <Button variant="success" as='a' href='/logowanie'>Zaloguj</Button>
-            <Button variant="primary" as='a' href='/rejestracja'>Zarejestruj</Button>
-          </ButtonGroup>
+          <LoginButtons className="mobile-buttons" />
         </Navbar.Collapse>
-        <ButtonGroup className='desktop-buttons'>
-          <Button variant="success" as='a' href='/logowanie'>Zaloguj</Button>
-          <Button variant="primary" as='a' href='/rejestracja'>Zarejestruj</Button>
-        </ButtonGroup>
+        <LoginButtons className="desktop-buttons" />
       </Container>
     </Navbar>
   );
