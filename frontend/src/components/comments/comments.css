@@ -1,0 +1,43 @@
+.comment-body {
+    width: 100%;
+    padding: 1.6rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fafafa;
+    box-shadow: 0 5px 10px -6px rgba(0, 0, 0, 0.15);
+}
+
+.report {
+    cursor: pointer;
+    color: rgb(86, 94, 102);
+}
+
+.date {
+    text-decoration: none;
+}
+
+.date:hover {
+    text-decoration: underline;
+}
+
+.action-btn {
+    user-select: none;
+}
+
+.action-btn:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.like {
+    color: #00c20a;
+}
+
+.dislike {
+    color: #d10000;
+}
+
+.answers {
+    width: 90%;
+    margin-left: auto;
+}
