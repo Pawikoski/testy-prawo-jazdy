@@ -1,6 +1,5 @@
 import "./questionStorage.css";
 import { useEffect, useState } from "react";
-import slugify from "slugify";
 import { Pagination, Stack } from "@mui/material";
 import Badge from "react-bootstrap/Badge";
 import CategoryFilter from "../../components/filters/categoryFilter";
@@ -9,13 +8,7 @@ import Container from "react-bootstrap/Container";
 import ListGroup from "react-bootstrap/ListGroup";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import { useSearchParams } from "react-router-dom";
-
-
-const buildSlug = (question, question_no) => {
-  question = question.split(' ').slice(0, 10).join(' ');
-  const slug = slugify(question, { lower: true, strict: true });
-  return "/pytanie/" + slug + ',' + question_no;
-}
+import buildSlug from "../../functions/buildSlug";
 
 const QuestionStorage = () => {
   const selectedStorageCategories = JSON.parse(localStorage.getItem('selectedCategories')) ? JSON.parse(localStorage.getItem('selectedCategories')) : [];
