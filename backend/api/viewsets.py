@@ -1,3 +1,5 @@
+import random
+
 from .models import Question, Category
 from .serializers import QuestionSerializer, CategorySerializer, DetailedQuestionSerializer
 from rest_framework.viewsets import ModelViewSet
@@ -24,6 +26,11 @@ class QuestionViewSet(ModelViewSet):
         language = self.request.query_params.get('language', None)
         if language is not None:
             queryset = queryset.filter(language=language)
+
+        is_random = self.request.query_params.get('random', None)
+        if is_random is not None:
+            pks = queryset.values_list('pk', flat=True)
+            queryset = queryset.filter(pk=random.choice(pks))
 
         categories_raw = self.request.query_params.get('categories', None)
         if categories_raw is not None and categories_raw != '':
