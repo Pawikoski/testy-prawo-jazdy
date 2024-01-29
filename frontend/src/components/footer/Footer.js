@@ -35,8 +35,8 @@ const Section = ({ title, links }) => {
 
 const Footer = () => {
   return (
-    <Container>
-      <footer className='mt-5'>
+      <footer className='mt-auto pt-5 border-top'>
+      <Container>
         <div className="row">
           <Section title="Prawo Jazdy" links={[{ name: 'O nas', href: '/o-nas' }, { name: 'Kontakt', href: '/kontakt' }, { name: 'Regulamin', href: '/regulamin' }, { name: 'Polityka prywatności', href: '/polityka-prywatnosci' }]} />
           <Section title="Popularne pytania" links={[{ name: 'O nas', href: '/o-nas' }, { name: 'Kontakt', href: '/kontakt' }, { name: 'Regulamin', href: '/regulamin' }, { name: 'Polityka prywatności', href: '/polityka-prywatnosci' }]} />
@@ -44,7 +44,7 @@ const Footer = () => {
           <NewsletterForm />
         </div>
 
-        <div className="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+        <div className="d-flex flex-column flex-sm-row justify-content-between py-2 my-2 border-top">
           <p>© 2024 Prawo Jazdy</p>
           <ul className="list-unstyled d-flex">
             {/* <li className="ms-3"><a className="link-body-emphasis" href="#"><svg className="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li> */}
@@ -52,8 +52,8 @@ const Footer = () => {
             {/* <li className="ms-3"><a className="link-body-emphasis" href="#"><svg className="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li> */}
           </ul>
         </div>
+        </Container>
       </footer>
-    </Container>
   );
 }
 
