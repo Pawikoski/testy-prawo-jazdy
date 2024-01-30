@@ -14,5 +14,5 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'subject', 'created')
+    list_display = ('subject', 'name', 'email', 'created')
     search_fields = ('name', 'email', 'subject', 'message')
