@@ -1,35 +1,42 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import App from './App';
-import QuestionStorage from './containers/questionStorage/QuestionStorage';
-import Login from './containers/user/Login';
-import reportWebVitals from './reportWebVitals';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import SingleQuestion from './containers/singleQuestion/SingleQuestion';
-import Contact from './containers/contact/Contact';
-import NotFound from './containers/NotFound';
-import Faq from './containers/faq/Faq';
-import BlogHome from './containers/blog/BlogHome';
-import RandomQuestion from './containers/randomQuestion/RandomQuestion';
-import CategoryLandingPage from './containers/categoryLandingPage/CategoryLandingPage';
+
 import AllCategories from './containers/allCategories/AllCategories';
-import Register from './containers/user/Register';
+import App from './App';
 import Article from './containers/blog/Article';
+import axios from 'axios';
+import BlogHome from './containers/blog/BlogHome';
+import CategoryLandingPage from './containers/categoryLandingPage/CategoryLandingPage';
+import Contact from './containers/contact/Contact';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Faq from './containers/faq/Faq';
+import NotFound from './containers/NotFound';
+import Login from './containers/user/Login';
+import Logout from './containers/user/Logout';
+import QuestionStorage from './containers/questionStorage/QuestionStorage';
+import ReactDOM from 'react-dom/client';
+import reportWebVitals from './reportWebVitals';
+import RandomQuestion from './containers/randomQuestion/RandomQuestion';
+import Register from './containers/user/Register';
+import SingleQuestion from './containers/singleQuestion/SingleQuestion';
+
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+axios.defaults.withCredentials = true;
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
 const questionLoader = (props) => {
   const question_no = props.params.slug.split(',')[1];
-  return fetch('http://localhost:8000/api/questions/' + question_no + '/?language=pl').then(response => response.json());
+  return axios.get('/questions/' + question_no + '/?language=pl').then(response => response.json());
 }
-
 
 const router = createBrowserRouter([
   {
     path: '/', element: <App />, children: [
       { path: 'logowanie', element: <Login /> },
       { path: 'rejestracja', element: <Register /> },
+      { path: 'wyloguj', element: <Logout /> },
       { path: 'baza-pytan', element: <QuestionStorage /> },
       {
         path: 'pytanie/:slug',
@@ -74,9 +81,7 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 );
 
 // If you want to start measuring performance in your app, pass a function
