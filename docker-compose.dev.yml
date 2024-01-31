@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend/:/usr/src/app/backend
+    expose:
+      - 8000
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /usr/src/app/frontend/node_modules
+      - ./frontend/:/usr/src/app/frontend
+    environment:
+      - WATCHPACK_POLLING=true
+    stdin_open: true
+    ports:
+      - 3000:3000
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - backend
+  # db:
+  #   image: postgres:16-alpine
+  #   expose:
+  #     - 5432
+  #   volumes:
+  #     - dev_db_volume:/var/lib/postgresql/data
+  #   environment:
+  #     - POSTGRES_USER=root_dev
+  #     - POSTGRES_PASSWORD=root_dev
+  #     - POSTGRES_DB=dev_db
+  nginx:
+    build: ./nginx_dev
+    ports:
+      - 80:80
+    depends_on:
+      - frontend
+      - backend
+
+volumes:
+  dev_db_volume:
