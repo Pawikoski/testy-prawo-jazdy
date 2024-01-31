@@ -1,31 +1,19 @@
+import axios from "axios";
 import { useState } from "react";
 import { Alert, Button, Col, Container, FloatingLabel, Form, Row, Spinner } from "react-bootstrap";
+import { useForm } from 'react-hook-form'
 
 const Contact = () => {
   const [sending, setSending] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
-    setSending(true);
-    const data = JSON.stringify({
-      "name": e.target.name.value,
-      "email": e.target.email.value,
-      "subject": e.target.subject.value,
-      "message": e.target.message.value,
-    });
-    const requestOptions = {
-      "method": 'POST',
-      "headers": {'Content-Type':'application/json'},
-      "body": data,
-    };
-
-    fetch('http://localhost:8000/api/contact/', requestOptions)
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const onSubmit = (data) => {
+    axios.post('/contact/', data)
       .then(response => {
-        if (response.ok) {
+        if (response.status === 201) {
           setSuccess(true);
-          e.target.reset();
         } else {
           setError(true);
         }
@@ -36,6 +24,7 @@ const Contact = () => {
       })
       .finally(() => {
         setSending(false);
+        reset();
       });
   }
 
@@ -47,18 +36,22 @@ const Contact = () => {
           <p className="col-lg-10 fs-4">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
         </Col>
         <Col md={10} lg={5} className="mx-auto">
-          <Form className="p-4 p-md-5 border rounded-3 bg-light" onSubmit={(e) => handleSubmit(e)}>
+          <Form className="p-4 p-md-5 border rounded-3 bg-light" onSubmit={handleSubmit((data) => onSubmit(data))}>
             <FloatingLabel className="mb-3" controlId="name" label="Twoje Imię">
-              <Form.Control required type="text" maxLength={255} id="name" placeholder="Jan" />
+              <Form.Control {...register("name", { required: true, maxLength: 255 })} type="text" placeholder="Jan" />
+              {errors['name'] && <span className="text-danger">To pole jest wymagane</span>}
             </FloatingLabel>
             <FloatingLabel className="mb-3" controlId="email" label="Twój adres e-mail">
-              <Form.Control required type="email" maxLength={150} id="email" placeholder="name@example.com" />
+              <Form.Control  {...register("email", { required: true, maxLength: 150 })} type="email" placeholder="name@example.com" />
+              {errors['email'] && <span className="text-danger">To pole jest wymagane</span>}
             </FloatingLabel>
             <FloatingLabel className="mb-3" controlId="subject" label="Temat">
-              <Form.Control required type="text" maxLength={255} id="subject" placeholder="Temat rozmowy" />
+              <Form.Control {...register("subject", { required: true, maxLength: 255 })} type="text" placeholder="Temat rozmowy" />
+              {errors['subject'] && <span className="text-danger">To pole jest wymagane</span>}
             </FloatingLabel>
             <FloatingLabel className="mb-3" controlId="message" label="Wiadomość">
-              <Form.Control required as="textarea" style={{ height: '120px' }} id="message" placeholder="Tutaj wpisz treść wiadomości" />
+              <Form.Control {...register("message", { required: true })} as="textarea" style={{ height: '120px' }} placeholder="Tutaj wpisz treść wiadomości" />
+              {errors['message'] && <span className="text-danger">To pole jest wymagane</span>}
             </FloatingLabel>
             {
               sending ?
