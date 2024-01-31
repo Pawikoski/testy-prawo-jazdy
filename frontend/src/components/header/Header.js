@@ -1,10 +1,6 @@
 import './Header.css';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown';
+import { useState } from 'react';
+import { Button, Container, Dropdown, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
 const pages = [
   { 'name': 'Baza pytań', 'href': '/baza-pytan' },
@@ -35,18 +31,23 @@ const pages = [
 ];
 
 const LoginButtons = ({ className }) => {
-  const loggedIn = Math.random() > 0.5; // TODO:
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem('loggedIn'));
+  window.addEventListener('storage', () => {
+    setLoggedIn(localStorage.getItem('loggedIn'));
+  });
+  const avatarSrc = require('../../assets/img/missing-avatar.png')
+
   return (
     loggedIn ?
       <Dropdown className={"flex-shrink-0 " + className}>
         <Dropdown.Toggle variant="link" href="#" className="link-dark text-decoration-none" id="dropdown-user">
-          <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" className="rounded-circle" />
+          <Image src={avatarSrc} alt="Zdjęcie profilowe" width={32} height={32} rounded />
         </Dropdown.Toggle>
         <Dropdown.Menu className="dropdown-menu text-small shadow" aria-labelledby="dropdown-user">
           <Dropdown.Item className="dropdown-item" href="#">New project...</Dropdown.Item>
           <Dropdown.Item className="dropdown-item" href="#">Profile</Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item className="dropdown-item" href="#">Settings</Dropdown.Item>
+          <Dropdown.Item className="dropdown-item" href="/wyloguj">Wyloguj się</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
       :
