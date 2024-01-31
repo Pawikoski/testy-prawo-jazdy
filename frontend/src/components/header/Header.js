@@ -67,17 +67,17 @@ const Header = () => {
           <Nav className="me-auto">
             {
               pages.map(
-                (page) => (
+                (page, idx) => (
                   page.children ?
-                    <NavDropdown style={{ border: "1px" }} title="Kategorie" id="basic-nav-dropdown" className='me-lg-2 me-xl-3'>
+                    <NavDropdown key={idx} style={{ border: "1px" }} title="Kategorie" id="basic-nav-dropdown" className='me-lg-2 me-xl-3'>
                       {
-                        page.children.map((child) => (
-                          <NavDropdown.Item href={child.href}>{child.name}</NavDropdown.Item>
+                        page.children.map((child, j) => (
+                          <NavDropdown.Item key={j} href={child.href}>{child.name}</NavDropdown.Item>
                         ))
                       }
                     </NavDropdown>
                     :
-                    <Nav.Link title={page.name} href={page.href} className='me-lg-2 me-xl-3'>{page.name}</Nav.Link>
+                    <Nav.Link key={idx} title={page.name} href={page.href} className='me-lg-2 me-xl-3'>{page.name}</Nav.Link>
                 ))
             }
           </Nav>

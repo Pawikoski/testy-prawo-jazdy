@@ -9,7 +9,7 @@ const NewsletterForm = () => {
         <h5>Zapisz się do naszego newslettera</h5>
         <p>Otrzymuj informacje o nowych pytaniach na egzaminie, artykułach związanych z prawem jazdy, zmianami w prawie.</p>
         <div className="d-flex flex-column flex-sm-row w-100 gap-2">
-          <Form.Label for="newsletter1" className="visually-hidden">Adres e-mail</Form.Label>
+          <Form.Label htmlFor="newsletter1" className="visually-hidden">Adres e-mail</Form.Label>
           <Form.Control type="email" placeholder="Adres e-mail" />
           <Button variant="primary">Zasubskrybuj</Button>
         </div>
@@ -24,8 +24,8 @@ const Section = ({ title, links }) => {
       <h5>{title}</h5>
       <ul className="nav flex-column">
         {
-          links.map((link) => (
-            <li className="nav-item mb-2"><a href={link.href} className="nav-link p-0 text-body-secondary">{link.name}</a></li>
+          links.map((link, index) => (
+            <li key={index} className="nav-item mb-2"><a href={link.href} className="nav-link p-0 text-body-secondary">{link.name}</a></li>
           ))
         }
       </ul>
