@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Question, Category, ContactMessage
+from .models import Question, Category, ContactMessage, User
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -28,3 +28,9 @@ class ContactMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactMessage
         fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'first_name', 'last_name', 'last_login', 'date_joined')
