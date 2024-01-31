@@ -6,6 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 
 const ITEM_HEIGHT = 48;
@@ -22,7 +23,7 @@ const MenuProps = {
 const CategoryFilter = ({ selectedCategories, setSelectedCategories }) => {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:8000/api/categories/').then(response => response.json()).then(data => setCategories(data))
+    axios.get('/categories/').then(response => setCategories(response.data)).catch(error => console.log(error));
   }, [])
 
   const handleChange = (event) => {

@@ -29,7 +29,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 const questionLoader = (props) => {
   const question_no = props.params.slug.split(',')[1];
-  return axios.get('/questions/' + question_no + '/?language=pl').then(response => response.json());
+  return axios.get('/questions/' + question_no + '/?language=pl').then(response => response.data).catch(error => console.log(error));
 }
 
 const router = createBrowserRouter([

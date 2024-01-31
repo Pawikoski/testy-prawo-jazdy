@@ -9,6 +9,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import { useSearchParams } from "react-router-dom";
 import buildSlug from "../../functions/buildSlug";
+import axios from "axios";
 
 const QuestionStorage = () => {
   const selectedStorageCategories = JSON.parse(localStorage.getItem('selectedCategories')) ? JSON.parse(localStorage.getItem('selectedCategories')) : [];
@@ -51,10 +52,10 @@ const QuestionStorage = () => {
     if (selectedCategories && selectedCategories.length > 0) {
       params.append('categories', selectedCategories.join(','));
     }
-    const url = params ? "http://localhost:8000/api/questions/?" + params : "http://localhost:8000/api/questions/";
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
+    const url = params ? "/questions/?" + params : "/questions/";
+    axios.get(url)
+      .then(response => {
+        const data = response.data;
         setQuestions(data.results);
         setPages(Math.ceil(data.count / 100))
       }).catch((error) => {
