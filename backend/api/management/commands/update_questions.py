@@ -3,18 +3,18 @@ import pandas as pd
 from typing import Any
 from django.core.management.base import BaseCommand
 from api.models import Question, Category
+from math import isnan
 
 
 class Command(BaseCommand):
     def convert_nan_str_to_none(self, value: Any) -> Any:
-        if value == "nan":
+        if isinstance(value, float) and isnan(value):
             return None
         return value
 
     def handle(self, *args: Any, **options: Any) -> str | None:
         xslx_url = "https://www.gov.pl/attachment/1e683ccd-6293-4656-9c16-fab2628b0c46"
         df = pd.read_excel(xslx_url, sheet_name="Arkusz1")
-        languages = ["pl", "en", "de"]
         for row in df.itertuples():
             question_no = row[2]
             multilang_data = {
@@ -44,7 +44,7 @@ class Command(BaseCommand):
             source = row[18]
             security_explenation = row[19]
 
-            for lang in languages:
+            for lang in ["pl", "en", "de"]:
                 try:
                     question = Question.objects.get(question_no=question_no, language=lang)
                     self.stdout.write(self.style.WARNING(f"Question {question_no} already exists"))
