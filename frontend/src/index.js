@@ -10,6 +10,7 @@ import CategoryLandingPage from './containers/categoryLandingPage/CategoryLandin
 import Contact from './containers/contact/Contact';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Faq from './containers/faq/Faq';
+import Home from './containers/home/Home';
 import NotFound from './containers/NotFound';
 import Login from './containers/user/Login';
 import Logout from './containers/user/Logout';
@@ -34,6 +35,7 @@ const questionLoader = (props) => {
 const router = createBrowserRouter([
   {
     path: '/', element: <App />, children: [
+      { path: '', element: <Home /> },
       { path: 'logowanie', element: <Login /> },
       { path: 'rejestracja', element: <Register /> },
       { path: 'wyloguj', element: <Logout /> },
