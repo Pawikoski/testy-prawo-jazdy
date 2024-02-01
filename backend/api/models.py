@@ -21,8 +21,13 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
 
+class Section(models.Model):
+    name = models.CharField(max_length=255)
+
+
 class Question(models.Model):
     question_no = models.IntegerField()
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='questions', blank=True, null=True)
     language = models.CharField(max_length=2, choices=LANGS)
     text = models.CharField(max_length=255)
     answer_a = models.CharField(max_length=255, blank=True, null=True)
