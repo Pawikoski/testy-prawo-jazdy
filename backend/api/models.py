@@ -5,9 +5,9 @@ from django.db import models
 
 
 LANGS = (
-    ('pl', 'Polish'),
-    ('en', 'English'),
-    ('de', 'German'),
+    ("pl", "Polish"),
+    ("en", "English"),
+    ("de", "German"),
 )
 
 
@@ -27,7 +27,13 @@ class Section(models.Model):
 
 class Question(models.Model):
     question_no = models.IntegerField()
-    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='questions', blank=True, null=True)
+    section = models.ForeignKey(
+        Section,
+        on_delete=models.CASCADE,
+        related_name="questions",
+        blank=True,
+        null=True,
+    )
     language = models.CharField(max_length=2, choices=LANGS)
     text = models.CharField(max_length=255)
     answer_a = models.CharField(max_length=255, blank=True, null=True)
@@ -35,7 +41,7 @@ class Question(models.Model):
     answer_c = models.CharField(max_length=255, blank=True, null=True)
     correct_answer = models.CharField(max_length=10)
     media = models.CharField(max_length=128, blank=True, null=True)
-    categories = models.ManyToManyField(Category, related_name='questions')
+    categories = models.ManyToManyField(Category, related_name="questions")
     question_source = models.TextField(blank=True, null=True)
     security_explenation = models.TextField(blank=True, null=True)
 
@@ -79,3 +85,90 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
+
+class UserStatictics(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="statistics")
+    questions_count = models.IntegerField(default=0)
+    correct_answers = models.IntegerField(default=0)
+    incorrect_answers = models.IntegerField(default=0)
+    last_answered = models.DateTimeField(auto_now=True)
+
+
+class UserAnswer(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_answers")
+    question = models.ForeignKey(
+        Question, on_delete=models.CASCADE, related_name="user_answers"
+    )
+    answer = models.CharField(max_length=10)
+    correct = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+
+COMMENT_STATUS = (
+    ("pending", "Pending"),
+    ("approved", "Approved"),
+    ("rejected", "Rejected"),
+    ("reported", "Reported"),
+    ("deleted", "Deleted"),
+)
+
+
+class QuestionComment(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True, related_name="comments"
+    )
+    question = models.ForeignKey(
+        Question, on_delete=models.CASCADE, related_name="comments"
+    )
+    status = models.CharField(max_length=10, choices=COMMENT_STATUS, default="pending")
+    text = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def get_total_likes(self):
+        return self.likes.count()
+
+    def get_total_dislikes(self):
+        return self.dislikes.count()
+
+
+class QuestionCommentAnswer(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True, related_name="answers_to_comment"
+    )
+    comment = models.ForeignKey(
+        QuestionComment, on_delete=models.CASCADE, related_name="answers_to_comment"
+    )
+    status = models.CharField(max_length=10, choices=COMMENT_STATUS, default="pending")
+    text = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def get_total_likes(self):
+        return self.likes.count()
+
+    def get_total_dislikes(self):
+        return self.dislikes.count()
+
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="likes")
+    comment = models.ForeignKey(
+        QuestionComment, on_delete=models.CASCADE, related_name="likes"
+    )
+    answer = models.ForeignKey(
+        QuestionCommentAnswer, on_delete=models.CASCADE, related_name="likes"
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+
+class Dislike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dislikes")
+    comment = models.ForeignKey(
+        QuestionComment, on_delete=models.CASCADE, related_name="dislikes"
+    )
+    answer = models.ForeignKey(
+        QuestionCommentAnswer, on_delete=models.CASCADE, related_name="dislikes"
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
