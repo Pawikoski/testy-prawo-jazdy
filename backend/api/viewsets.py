@@ -1,6 +1,6 @@
 import random
 
-from .models import Question, Category, ContactMessage, User
+from .models import Question, Category, ContactMessage
 from .serializers import (
     QuestionSerializer,
     CategorySerializer,
@@ -14,7 +14,6 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.exceptions import MethodNotAllowed
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -28,6 +27,7 @@ class QuestionViewSet(ModelViewSet):
     pagination_class = StandardResultsSetPagination
     ordering_fields = ["language", "categories"]
     lookup_field = "question_no"
+    http_method_names = ["get"]
 
     # queryset = Question.objects.all()
 
@@ -58,6 +58,7 @@ class QuestionViewSet(ModelViewSet):
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    http_method_names = ["get"]
 
 
 class ContactMessageViewSet(GenericViewSet, CreateModelMixin):
