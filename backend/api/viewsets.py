@@ -47,7 +47,7 @@ class QuestionViewSet(ModelViewSet):
         if categories_raw is not None and categories_raw != "":
             categories = Category.objects.filter(name__in=categories_raw.split(","))
             queryset = queryset.filter(categories__in=categories)
-        return queryset
+        return queryset.distinct()
 
     def get_serializer_class(self):
         if self.lookup_field in self.kwargs:
