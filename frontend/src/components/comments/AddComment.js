@@ -10,7 +10,6 @@ const AddComment = ({ questionId, refresh, setRefresh }) => {
   window.addEventListener('storage', () => {
     setUserName(JSON.parse(localStorage.getItem('user')).first_name);
   });
-  console.log(localStorage.getItem("loggedIn"))
 
   const onSubmit = (data) => {
     data.question = questionId;
