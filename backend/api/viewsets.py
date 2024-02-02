@@ -1,12 +1,13 @@
 import random
 
-from .models import Question, Category, ContactMessage
+from .models import Question, Category, ContactMessage, QuestionComment, User
 from .serializers import (
     QuestionSerializer,
     CategorySerializer,
     DetailedQuestionSerializer,
     ContactMessageSerializer,
     UserSerializer,
+    QuestionCommentSerializer,
 )
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin
@@ -22,14 +23,18 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
+class SmallResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = "page_size"
+    max_page_size = 20
+
+
 class QuestionViewSet(ModelViewSet):
     serializer_class = QuestionSerializer
     pagination_class = StandardResultsSetPagination
     ordering_fields = ["language", "categories"]
     lookup_field = "question_no"
     http_method_names = ["get"]
-
-    # queryset = Question.objects.all()
 
     def get_queryset(self):
         queryset = Question.objects.all()
@@ -79,9 +84,39 @@ class ContactMessageViewSet(GenericViewSet, CreateModelMixin):
 class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
-    http_method_names = ["get", ]
+    http_method_names = ["get"]
 
     def list(self, request, *args, **kwargs):
         user = self.request.user
         serializer = self.get_serializer(user)
         return Response(serializer.data)
+
+
+class QuestionCommentViewSet(ModelViewSet):
+    serializer_class = QuestionCommentSerializer
+    pagination_class = SmallResultsSetPagination
+    queryset = QuestionComment.objects.all()
+    http_method_names = ["get", "post"]
+    permission_classes = [AllowAny]
+
+    def filter_queryset(self, queryset):
+        return queryset.order_by("-created")
+
+    def list(self, request, *args, **kwargs):
+        question_pk = request.query_params.get("qid", None)
+        if not question_pk:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        self.queryset = self.queryset.filter(question__id=question_pk)
+        return super().list(request, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            user = User.objects.get(id=request.user.id)
+            if not request.user.first_name:
+                user.first_name = request.data.get("name")
+                user.save()
+            request.data["user"] = user.id
+        if request.data.get("user", None) and not request.user.is_authenticated:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        return super().create(request, *args, **kwargs)
