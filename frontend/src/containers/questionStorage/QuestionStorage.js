@@ -15,6 +15,11 @@ const QuestionStorage = () => {
   const [searchParams] = useSearchParams();
   const [searchPhraseTemp, setSearchPhraseTemp] = useState(searchParams.get('q') ? searchParams.get('q') : null);
   const [searchPhrase, setSearchPhrase] = useState(searchParams.get('q') ? searchParams.get('q') : null);
+  const [questionsCount, setQuestionsCount] = useState(0);
+  window.addEventListener('storage', () => {
+    const questionsCount = localStorage.getItem('questionsCount');
+    if (questionsCount) setQuestionsCount(questionsCount);
+  });
 
   const handleSelectedCategoriesChange = (value) => {
     setSelectedCategories(value);
@@ -33,9 +38,10 @@ const QuestionStorage = () => {
     <Container>
       <Breadcrumb>
         <Breadcrumb.Item href="/">Prawo Jazdy</Breadcrumb.Item>
-        <Breadcrumb.Item active>Pytania{selectedCategories && selectedCategories.length !== 0 && " (kat. " + selectedCategories.join(", ") + ")"}</Breadcrumb.Item>
+        <Breadcrumb.Item active>Pytania i odpowiedzi{selectedCategories && selectedCategories.length !== 0 && " (kat. " + selectedCategories.join(", ") + ")"}</Breadcrumb.Item>
       </Breadcrumb>
-      <h3>Baza pytań</h3>
+      <h3 className="mb-0">Baza pytań z odpowiedziami</h3>
+      <small className="text-muted">{questionsCount} pytań</small>
       <div className="filters">
         <QuestionSearchBar searchPhrase={searchPhraseTemp} setSearchPhrase={setSearchPhraseTemp} />
         <CategoryFilter selectedCategories={selectedCategories} setSelectedCategories={handleSelectedCategoriesChange} />
