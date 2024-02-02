@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 function App() {
   useEffect(() => {
     const cookies = Cookies.get();
-    if (!cookies.csrf_token) {
+    if (!cookies.csrftoken) {
       setCSRFToken();
     }
     return () => {};
