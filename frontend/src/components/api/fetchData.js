@@ -3,10 +3,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 
-function useFetchQuestions(url, page, categories, searchPhrase) {
+export const useFetchQuestions = (url, page, categories, searchPhrase) => {
   const [resource, setResource] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  
 
   useEffect(() => {
     const params = {
@@ -24,7 +23,7 @@ function useFetchQuestions(url, page, categories, searchPhrase) {
       params.categories = categories.join(',');
     }
     const getData = async () => {
-      const promise = axios.get(url, {params: params}).then((response) => response.data);
+      const promise = axios.get(url, { params: params }).then((response) => response.data);
       setResource(promiseWrapper(promise));
     };
 
@@ -34,4 +33,17 @@ function useFetchQuestions(url, page, categories, searchPhrase) {
   return resource;
 }
 
-export default useFetchQuestions;
+export const useFetchQuestionComments = (url, page, refresh) => {
+  const [resource, setResource] = useState(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      const promise = axios.get(url, { params: { page: page } }).then((response) => response.data);
+      setResource(promiseWrapper(promise));
+    };
+
+    getData();
+  }, [url, page, refresh]);
+
+  return resource;
+}
