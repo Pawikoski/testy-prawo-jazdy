@@ -43,7 +43,7 @@ const QuestionStorage = () => {
       <h3 className="mb-0">Baza pytań z odpowiedziami</h3>
       <small className="text-muted">{questionsCount} pytań</small>
       <div className="filters">
-        <QuestionSearchBar searchPhrase={searchPhraseTemp} setSearchPhrase={setSearchPhraseTemp} />
+        <QuestionSearchBar value={searchPhraseTemp} searchPhrase={searchPhraseTemp} setSearchPhrase={setSearchPhraseTemp} />
         <CategoryFilter selectedCategories={selectedCategories} setSelectedCategories={handleSelectedCategoriesChange} />
       </div>
       <Suspense fallback={<LoadingList />}>
