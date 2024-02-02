@@ -10,6 +10,7 @@ const AddComment = ({ questionId, refresh, setRefresh }) => {
   window.addEventListener('storage', () => {
     setUserName(JSON.parse(localStorage.getItem('user')).first_name);
   });
+  console.log(localStorage.getItem("loggedIn"))
 
   const onSubmit = (data) => {
     data.question = questionId;
@@ -31,7 +32,7 @@ const AddComment = ({ questionId, refresh, setRefresh }) => {
       <Col md={10} className="mx-auto border rounded p-4 bg-white" id="add-comment">
         <h3>Dodaj komentarz</h3>
         <Form onSubmit={handleSubmit((data) => onSubmit(data))}>
-          {userName ? null : (
+          {userName || !localStorage.getItem("loggedIn") ? null : (
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Twoje imię</Form.Label>
               <Form.Control {...register("name", { required: true })} type="text" placeholder="Paweł" />
