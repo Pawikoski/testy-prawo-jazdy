@@ -3,18 +3,19 @@ import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import fetchUserInfo from "../../functions/userInfo";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const AuthForm = ({ authEndpoint, fields, formName, shortText }) => {
   const loggedIn = (localStorage.getItem('loggedIn'));
   const { handleSubmit, register, formState: { errors } } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     axios.post(`/auth/${authEndpoint}/`, data)
       .then((response) => {
         if (response.status === 200) {
           fetchUserInfo();
-          window.location.href = '/';
+          navigate(-1)
         }
       }).catch((error) => {
         console.log(error);
