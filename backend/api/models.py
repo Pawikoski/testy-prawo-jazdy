@@ -153,10 +153,10 @@ class QuestionCommentAnswer(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="likes")
     comment = models.ForeignKey(
-        QuestionComment, on_delete=models.CASCADE, related_name="likes"
+        QuestionComment, on_delete=models.CASCADE, related_name="likes", null=True, blank=True
     )
     answer = models.ForeignKey(
-        QuestionCommentAnswer, on_delete=models.CASCADE, related_name="likes"
+        QuestionCommentAnswer, on_delete=models.CASCADE, related_name="likes", null=True, blank=True
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -165,10 +165,10 @@ class Like(models.Model):
 class Dislike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dislikes")
     comment = models.ForeignKey(
-        QuestionComment, on_delete=models.CASCADE, related_name="dislikes"
+        QuestionComment, on_delete=models.CASCADE, related_name="dislikes", null=True, blank=True
     )
     answer = models.ForeignKey(
-        QuestionCommentAnswer, on_delete=models.CASCADE, related_name="dislikes"
+        QuestionCommentAnswer, on_delete=models.CASCADE, related_name="dislikes", null=True, blank=True
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
