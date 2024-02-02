@@ -15,7 +15,7 @@ const SingleQuestion = (slug) => {
     <Container>
       <Breadcrumb>
         <Breadcrumb.Item href="/">Prawo Jazdy</Breadcrumb.Item>
-        <Breadcrumb.Item href="/baza-pytan">Pytania</Breadcrumb.Item>
+        <Breadcrumb.Item href="/baza-pytan">Pytania i odpowiedzi</Breadcrumb.Item>
         <Breadcrumb.Item active>{question.text}</Breadcrumb.Item>
       </Breadcrumb>
       <div className="d-flex question-wrapper">
@@ -43,11 +43,11 @@ const SingleQuestion = (slug) => {
       <hr />
       <div className="d-flex flex-row w-100 mt-3 justify-content-between">
         <Button>Poprzednie pytanie</Button>
-        <Button variant="success">Pytanie {question.id} / 5000</Button>
+        <Button variant="success">Wybrana kategoria: ABC</Button>
         <Button>Następne pytanie</Button>
       </div>
       <hr className='my-5' />
-      <CommentSection />
+      <CommentSection questionId={question.id} />
     </Container>
   );
 }
