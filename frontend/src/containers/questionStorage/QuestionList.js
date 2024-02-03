@@ -36,7 +36,7 @@ const QuestionList = ({categories, searchPhrase}) => {
       ))
       }
       <div className="d-flex justify-content-center">
-        <Stack spacing={2} mt="2rem">
+        <Stack spacing={2} my="2rem">
           { data && <Pagination onChange={(_, v) => setCurrentPage(v)} count={handleCountChange(data.count)} page={currentPage} color="primary" /> }
         </Stack>
       </div>
