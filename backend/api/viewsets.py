@@ -1,13 +1,25 @@
 import random
 
-from .models import Question, Category, ContactMessage, QuestionComment, User
+from .models import (
+    Question,
+    Category,
+    ContactMessage,
+    QuestionComment,
+    QuestionCommentAnswer,
+    User,
+    Like,
+    Dislike,
+)
 from .serializers import (
     QuestionSerializer,
     CategorySerializer,
     DetailedQuestionSerializer,
     ContactMessageSerializer,
     UserSerializer,
+    DislikeSerializer,
+    LikeSerializer,
     QuestionCommentSerializer,
+    QuestionCommentAnswerSerializer,
 )
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin
@@ -120,3 +132,48 @@ class QuestionCommentViewSet(ModelViewSet):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         return super().create(request, *args, **kwargs)
+
+
+class QuestionCommentAnswerViewSet(ModelViewSet):
+    serializer_class = QuestionCommentAnswerSerializer
+    queryset = QuestionCommentAnswer.objects.all()
+    http_method_names = ["post"]
+    permission_classes = [AllowAny]
+
+    def filter_queryset(self, queryset):
+        return queryset.order_by("-created")
+
+    def create(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            user = User.objects.get(id=request.user.id)
+            if not request.user.first_name:
+                user.first_name = request.data.get("name")
+                user.save()
+            request.data["user"] = user.id
+        if request.data.get("user", None) and not request.user.is_authenticated:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        return super().create(request, *args, **kwargs)
+
+
+class RatingViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    http_method_names = ["post"]
+
+    def create(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.is_authenticated:
+            user = User.objects.get(id=request.user.id)
+            request.data["user"] = user.id
+        return super().create(request, *args, **kwargs)
+
+
+class LikeViewset(RatingViewSet):
+    serializer_class = LikeSerializer
+    queryset = Like.objects.all()
+
+
+class DislikeViewset(RatingViewSet):
+    serializer_class = DislikeSerializer
+    queryset = Dislike.objects.all()
