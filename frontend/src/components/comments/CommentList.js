@@ -3,19 +3,22 @@ import SingleComment from "./SingleComment";
 import { useFetchQuestionComments } from "../api/fetchData";
 import { Pagination, Stack } from "@mui/material";
 import { useState } from "react";
+import NeedLogin from "../modals/NeedLogin";
 
-const CommentList = ({ questionId, refresh }) => {
+const CommentList = ({ questionId, refresh, setRefresh }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [showNeedLogin, setShowNeedLogin] = useState(false);
   const comments = useFetchQuestionComments(`/question-comments/?qid=${questionId}`, currentPage, refresh);
 
   return (
     <>
+      <NeedLogin show={showNeedLogin} setShow={setShowNeedLogin} />
       {comments && comments.results.map((comment) => (
         <Row key={comment.id}>
-          <SingleComment comment={comment} />
+          <SingleComment commentId={comment.id} comment={comment} setRefresh={setRefresh} commentType={"comment"} showModal={setShowNeedLogin} />
           <section className="answers">
             {comment.answers && comment.answers.map((answer, idx) => (
-              <SingleComment key={`${comment.id}-${idx}`} comment={answer} />
+              <SingleComment commentId={comment.id} key={`${comment.id}-${idx}`} comment={answer} setRefresh={setRefresh} refresh={refresh} commentType={"answer"} showModal={setShowNeedLogin} />
             ))}
           </section>
         </Row>
