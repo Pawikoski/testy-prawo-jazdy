@@ -7,7 +7,7 @@
     box-shadow: 0 5px 10px -6px rgba(0, 0, 0, 0.15);
 }
 
-.report {
+.grey {
     color: rgb(86, 94, 102);
 }
 
@@ -40,4 +40,8 @@
 .answers {
     width: 90%;
     margin-left: auto;
+}
+
+.filter-select {
+    width: 15%;
 }
