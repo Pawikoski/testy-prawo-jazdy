@@ -1,5 +1,9 @@
 .media {
     margin-right: 3rem;
+    width:600px;
+    height: 400px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .question-wrapper {
