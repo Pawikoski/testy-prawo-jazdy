@@ -34,6 +34,12 @@ class QuestionSerializer(serializers.ModelSerializer):
         ]
 
 
+class SideQuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = ["id", "question_no", "text"]
+
+
 class DetailedQuestionSerializer(serializers.ModelSerializer):
     categories = CategorySerializer(read_only=True, many=True)
 

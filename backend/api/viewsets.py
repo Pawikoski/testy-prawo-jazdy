@@ -20,6 +20,7 @@ from .serializers import (
     LikeSerializer,
     QuestionCommentSerializer,
     QuestionCommentAnswerSerializer,
+    SideQuestionSerializer,
 )
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin
@@ -65,6 +66,32 @@ class QuestionViewSet(ModelViewSet):
             categories = Category.objects.filter(name__in=categories_raw.split(","))
             queryset = queryset.filter(categories__in=categories)
         return queryset.distinct()
+
+    def get_previous_object(self, obj):
+        queryset = self.filter_queryset(self.get_queryset())
+        try:
+            return queryset.filter(pk__lt=obj.pk).order_by('-pk').first()
+        except queryset.model.DoesNotExist:
+            return None
+
+    def get_next_object(self, obj):
+        queryset = self.filter_queryset(self.get_queryset())
+        try:
+            return queryset.filter(pk__gt=obj.pk).order_by('pk').first()
+        except queryset.model.DoesNotExist:
+            return None
+
+    def finalize_response(self, request, response, *args, **kwargs):
+        response = super().finalize_response(request, response, *args, **kwargs)
+        if isinstance(response.data, dict) and 'results' not in response.data:
+            obj = self.get_object()  # Get the current object
+            prev_obj = self.get_previous_object(obj)
+            next_obj = self.get_next_object(obj)
+            
+            response.data['previous'] = SideQuestionSerializer(prev_obj).data if prev_obj else None
+            response.data['next'] = SideQuestionSerializer(next_obj).data if next_obj else None
+
+        return response
 
     def get_serializer_class(self):
         if self.lookup_field in self.kwargs:

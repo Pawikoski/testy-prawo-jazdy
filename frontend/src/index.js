@@ -28,8 +28,15 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
 const questionLoader = (props) => {
+  console.log(localStorage.getItem('selectedCategories'))
   const question_no = props.params.slug.split(',')[1];
-  return axios.get('/questions/' + question_no + '/?language=pl').then(response => response.data).catch(error => console.log(error));
+  const params = {
+    language: 'pl',
+  }
+  if (localStorage.getItem('selectedCategories')) {
+    params.categories = JSON.parse(localStorage.getItem('selectedCategories')).join(',');
+  }
+  return axios.get('/questions/' + question_no, {params: params}).then(response => response.data).catch(error => console.log(error));
 }
 
 const router = createBrowserRouter([
