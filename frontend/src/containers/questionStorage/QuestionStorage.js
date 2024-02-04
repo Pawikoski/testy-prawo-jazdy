@@ -1,4 +1,3 @@
-import "./questionStorage.css";
 import CategoryFilter from "../../components/filters/categoryFilter";
 import { Container, Breadcrumb } from "react-bootstrap";
 import LoadingList from "./LoadingList";
@@ -13,13 +12,22 @@ const QuestionStorage = () => {
   const [selectedCategories, setSelectedCategories] = useState(selectedStorageCategories);
 
   const [searchParams] = useSearchParams();
-  const [searchPhraseTemp, setSearchPhraseTemp] = useState(searchParams.get('q') ? searchParams.get('q') : null);
+  const [searchPhraseTemp, setSearchPhraseTemp] = useState(searchParams.get('q') ? searchParams.get('q') : '');
   const [searchPhrase, setSearchPhrase] = useState(searchParams.get('q') ? searchParams.get('q') : null);
   const [questionsCount, setQuestionsCount] = useState(0);
-  window.addEventListener('storage', () => {
-    const questionsCount = localStorage.getItem('questionsCount');
-    if (questionsCount) setQuestionsCount(questionsCount);
-  });
+  const handleStorageChange = () => {
+    const newQuestionsCount = localStorage.getItem('questionsCount');
+    if (newQuestionsCount !== null) {
+      setQuestionsCount(parseInt(newQuestionsCount, 10));
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   const handleSelectedCategoriesChange = (value) => {
     setSelectedCategories(value);
@@ -42,7 +50,7 @@ const QuestionStorage = () => {
       </Breadcrumb>
       <h3 className="mb-0">Baza pytań z odpowiedziami</h3>
       <small className="text-muted">{questionsCount} pytań</small>
-      <div className="filters">
+      <div className="d-flex flex-md-row flex-column align-items-center justify-content-center">
         <QuestionSearchBar value={searchPhraseTemp} searchPhrase={searchPhraseTemp} setSearchPhrase={setSearchPhraseTemp} />
         <CategoryFilter selectedCategories={selectedCategories} setSelectedCategories={handleSelectedCategoriesChange} />
       </div>

@@ -2,7 +2,7 @@ import { ListGroup, Badge } from "react-bootstrap";
 import buildSlug from "../../functions/buildSlug";
 import {useFetchQuestions} from "../../components/api/fetchData";
 import { Pagination, Stack } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 const QuestionList = ({categories, searchPhrase}) => {
@@ -11,8 +11,17 @@ const QuestionList = ({categories, searchPhrase}) => {
   const handleCountChange = (count) => {
     localStorage.setItem('questionsCount', count);
     window.dispatchEvent(new Event('storage'));
-    return Math.ceil(count / 100)
-  }
+  };
+
+  useEffect(() => {
+    if (data && data.count) {
+      handleCountChange(data.count);
+    }
+  }, [data]);
+
+  const calculatePageCount = (count) => {
+    return Math.ceil(count / 100);
+  };
 
   return (
     <ListGroup as="ul">
@@ -37,7 +46,7 @@ const QuestionList = ({categories, searchPhrase}) => {
       }
       <div className="d-flex justify-content-center">
         <Stack spacing={2} my="2rem">
-          { data && <Pagination onChange={(_, v) => setCurrentPage(v)} count={handleCountChange(data.count)} page={currentPage} color="primary" /> }
+          { data && <Pagination onChange={(_, v) => setCurrentPage(v)} count={calculatePageCount(data.count)} page={currentPage} color="primary" /> }
         </Stack>
       </div>
     </ListGroup>
