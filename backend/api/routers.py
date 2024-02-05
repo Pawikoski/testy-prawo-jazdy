@@ -6,7 +6,8 @@ from .viewsets import (
     QuestionCommentViewSet,
     QuestionCommentAnswerViewSet,
     LikeViewset,
-    DislikeViewset
+    DislikeViewset,
+    QuestionCountView
 )
 from rest_framework import routers
 
@@ -21,6 +22,8 @@ router.register(
     QuestionCommentAnswerViewSet,
     basename="question-comment-answers",
 )
+router.register('question-count', QuestionCountView, basename='question-count')
+
 router.register('like', LikeViewset, basename='like')
 router.register('dislike', DislikeViewset, basename='dislike')
 

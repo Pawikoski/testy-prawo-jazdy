@@ -87,7 +87,7 @@ class QuestionViewSet(ModelViewSet):
             obj = self.get_object()  # Get the current object
             prev_obj = self.get_previous_object(obj)
             next_obj = self.get_next_object(obj)
-            
+
             response.data['previous'] = SideQuestionSerializer(prev_obj).data if prev_obj else None
             response.data['next'] = SideQuestionSerializer(next_obj).data if next_obj else None
 
@@ -204,3 +204,17 @@ class LikeViewset(RatingViewSet):
 class DislikeViewset(RatingViewSet):
     serializer_class = DislikeSerializer
     queryset = Dislike.objects.all()
+
+
+class QuestionCountView(GenericViewSet):
+    permission_classes = [AllowAny]
+
+    def list(self, request, *args, **kwargs):
+        categories = request.query_params.get("categories", None)
+        if not categories:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        categories = Category.objects.filter(name__in=categories.split(",")).values_list("id", flat=True)
+        return Response(
+            {"count": Question.objects.filter(categories__in=categories, language="pl").count()},
+            status=status.HTTP_200_OK,
+        )
