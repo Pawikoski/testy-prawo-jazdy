@@ -15,10 +15,13 @@ const Video = ({ className, src }) => {
 
 const MediaPlayer = ({ question, src }) => {
   return (
-    src.endsWith('.webp') ?
-      <Image className="media" title={question} src={"/media" + src} fluid />
+    src ?
+      src.endsWith('.webp') ?
+        <Image className="media" title={question} src={"/media" + src} fluid />
+        :
+        <Video className="media" src={"/media" + src} />
       :
-      <Video className="media" src={"/media" + src} />
+      <Image className="media" title={question} src="https://placehold.co/600x400" fluid />
   );
 }
 
