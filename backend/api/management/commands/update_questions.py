@@ -10,6 +10,14 @@ class Command(BaseCommand):
     def convert_nan_str_to_none(self, value: Any) -> Any:
         if isinstance(value, float) and isnan(value):
             return None
+        value = value.replace(" ", "-")
+        value = value.replace(".jpg", ".webp").replace(".JPG", ".webp")
+        value = value.replace(".wmv", ".mp4").replace(".WMV", ".mp4")
+        if value.endswith(".webp"):
+            value = "/images/" + value
+        elif value.endswith(".mp4"):
+            value = "/videos/" + value
+
         return value
 
     def handle(self, *args: Any, **options: Any) -> str | None:
