@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import CommentSection from '../../components/comments/CommentSection';
 import { useRef, useState } from 'react';
 import buildSlug from '../../functions/buildSlug';
+import MediaPlayer from '../../components/media/MediaPlayer';
 
 
 const SingleQuestion = (slug) => {
@@ -41,8 +42,7 @@ const SingleQuestion = (slug) => {
         <Breadcrumb.Item active>{question.text}</Breadcrumb.Item>
       </Breadcrumb>
       <div className="d-flex question-wrapper">
-        {/* <Image title={question.media} className="media" src="https://placehold.co/600x400" fluid /> */}
-        <Image title={question.media} className="media" src={ "/media" + question.media} fluid />
+        <MediaPlayer question={question.text} src={question.media} />
         <div className="ms-2 py-2 me-auto d-flex flex-column justify-content-between">
           <h3 className='mb-3'>{question.text}</h3>
           {
@@ -63,11 +63,10 @@ const SingleQuestion = (slug) => {
           }
         </div>
       </div>
-      <hr />
-      <div className="d-flex flex-row w-100 mt-3 justify-content-between">
-        <Button href={buildSlug(question.previous.text, question.previous.question_no)}>Poprzednie pytanie</Button>
+      <div className="d-flex flex-row w-100 mt-3 justify-content-between border-top py-3">
+        <Button disabled={ !question.previous } href={question.previous && buildSlug(question.previous.text, question.previous.question_no)}>Poprzednie pytanie</Button>
         <Button variant="success">Wybrana kategoria: {selectedCategories != "" ? selectedCategories : "Wszystkie"}</Button>
-        <Button href={buildSlug(question.next.text, question.next.question_no)}>Następne pytanie</Button>
+        <Button disabled={ !question.next } href={question.next && buildSlug(question.next.text, question.next.question_no)}>Następne pytanie</Button>
       </div>
       <hr className='my-5' />
       <CommentSection questionId={question.id} />
