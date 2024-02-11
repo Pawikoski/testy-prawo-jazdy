@@ -27,8 +27,7 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
-const questionLoader = (props) => {
-  console.log(localStorage.getItem('selectedCategories'))
+const questionLoader = async (props) => {
   const question_no = props.params.slug.split(',')[1];
   const params = {
     language: 'pl',
@@ -36,7 +35,12 @@ const questionLoader = (props) => {
   if (localStorage.getItem('selectedCategories')) {
     params.categories = JSON.parse(localStorage.getItem('selectedCategories')).join(',');
   }
-  return axios.get('/questions/' + question_no, {params: params}).then(response => response.data).catch(error => console.log(error));
+  try {
+    const response = await axios.get('/questions/' + question_no, { params: params });
+    return response.data;
+  } catch (error) {
+    return console.log(error);
+  }
 }
 
 const router = createBrowserRouter([
