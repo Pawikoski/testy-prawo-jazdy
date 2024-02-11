@@ -105,6 +105,22 @@ class UserAnswer(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
+class ArticleCategory(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
+
+
+class Article(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
+    banner = models.ImageField(upload_to="articles/banners", blank=True, null=True)
+    category = models.ForeignKey(ArticleCategory, on_delete=models.CASCADE, related_name="articles")
+    content = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="articles")
+
+
 COMMENT_STATUS = (
     ("pending", "Pending"),
     ("approved", "Approved"),
@@ -114,13 +130,14 @@ COMMENT_STATUS = (
 )
 
 
-class QuestionComment(models.Model):
+class Comment(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True, related_name="comments"
     )
     question = models.ForeignKey(
         Question, on_delete=models.CASCADE, related_name="comments"
     )
+    # article = models.ForeignKey() ## TODO:
     status = models.CharField(max_length=10, choices=COMMENT_STATUS, default="pending")
     text = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
@@ -132,12 +149,12 @@ class QuestionComment(models.Model):
         return self.dislikes.count()
 
 
-class QuestionCommentAnswer(models.Model):
+class CommentAnswer(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True, related_name="answers_to_comment"
     )
     comment = models.ForeignKey(
-        QuestionComment, on_delete=models.CASCADE, related_name="answers_to_comment"
+        Comment, on_delete=models.CASCADE, related_name="answers_to_comment"
     )
     status = models.CharField(max_length=10, choices=COMMENT_STATUS, default="pending")
     text = models.TextField()
@@ -153,10 +170,10 @@ class QuestionCommentAnswer(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="likes")
     comment = models.ForeignKey(
-        QuestionComment, on_delete=models.CASCADE, related_name="likes", null=True, blank=True
+        Comment, on_delete=models.CASCADE, related_name="likes", null=True, blank=True
     )
     answer = models.ForeignKey(
-        QuestionCommentAnswer, on_delete=models.CASCADE, related_name="likes", null=True, blank=True
+        CommentAnswer, on_delete=models.CASCADE, related_name="likes", null=True, blank=True
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -165,10 +182,10 @@ class Like(models.Model):
 class Dislike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dislikes")
     comment = models.ForeignKey(
-        QuestionComment, on_delete=models.CASCADE, related_name="dislikes", null=True, blank=True
+        Comment, on_delete=models.CASCADE, related_name="dislikes", null=True, blank=True
     )
     answer = models.ForeignKey(
-        QuestionCommentAnswer, on_delete=models.CASCADE, related_name="dislikes", null=True, blank=True
+        CommentAnswer, on_delete=models.CASCADE, related_name="dislikes", null=True, blank=True
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
