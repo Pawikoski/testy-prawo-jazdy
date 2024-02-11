@@ -6,8 +6,8 @@ from .models import (
     User,
     Like,
     Dislike,
-    QuestionComment,
-    QuestionCommentAnswer,
+    Comment,
+    CommentAnswer,
 )
 
 
@@ -92,7 +92,7 @@ class QuestionCommentAnswerSerializer(serializers.ModelSerializer):
         return False
 
     class Meta:
-        model = QuestionCommentAnswer
+        model = CommentAnswer
         fields = [
             "id",
             "author",
@@ -138,7 +138,7 @@ class QuestionCommentSerializer(serializers.ModelSerializer):
         return False
 
     class Meta:
-        model = QuestionComment
+        model = Comment
         fields = [
             "id",
             "author",

@@ -4,8 +4,8 @@ from .models import (
     Question,
     Category,
     ContactMessage,
-    QuestionComment,
-    QuestionCommentAnswer,
+    Comment,
+    CommentAnswer,
     User,
     Like,
     Dislike,
@@ -134,7 +134,7 @@ class UserViewSet(ModelViewSet):
 class QuestionCommentViewSet(ModelViewSet):
     serializer_class = QuestionCommentSerializer
     pagination_class = SmallResultsSetPagination
-    queryset = QuestionComment.objects.all()
+    queryset = Comment.objects.all()
     http_method_names = ["get", "post"]
     permission_classes = [AllowAny]
 
@@ -163,7 +163,7 @@ class QuestionCommentViewSet(ModelViewSet):
 
 class QuestionCommentAnswerViewSet(ModelViewSet):
     serializer_class = QuestionCommentAnswerSerializer
-    queryset = QuestionCommentAnswer.objects.all()
+    queryset = CommentAnswer.objects.all()
     http_method_names = ["post"]
     permission_classes = [AllowAny]
 
