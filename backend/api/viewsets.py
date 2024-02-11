@@ -56,15 +56,15 @@ class QuestionViewSet(ModelViewSet):
         if language is not None:
             queryset = queryset.filter(language=language)
 
-        is_random = self.request.query_params.get("random", None)
-        if is_random is not None:
-            pks = queryset.values_list("pk", flat=True)
-            queryset = queryset.filter(pk=random.choice(pks))
-
         categories_raw = self.request.query_params.get("categories", None)
         if categories_raw is not None and categories_raw != "":
             categories = Category.objects.filter(name__in=categories_raw.split(","))
             queryset = queryset.filter(categories__in=categories)
+
+        is_random = self.request.query_params.get("random", None)
+        if is_random is not None:
+            pks = queryset.values_list("pk", flat=True)
+            queryset = queryset.filter(pk=random.choice(pks))
         return queryset.distinct()
 
     def get_previous_object(self, obj):
