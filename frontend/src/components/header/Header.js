@@ -24,9 +24,9 @@ const pages = [
       { name: 'Kategoria PT', href: '/prawo-jazdy/kategoria-pt' }
     ]
   },
-  { 'name': 'Tryb nauki', 'href': '/losuj-pytanie' },
   { 'name': 'Losuj pytanie', 'href': '/losuj-pytanie' },
   { 'name': 'Blog', 'href': '/blog' },
+  { 'name': 'FAQ', 'href': '/faq' },
   { 'name': 'Kontakt', 'href': '/kontakt' }
 ];
 
@@ -89,5 +89,4 @@ const Header = () => {
     </Navbar>
   );
 }
-
 export default Header;

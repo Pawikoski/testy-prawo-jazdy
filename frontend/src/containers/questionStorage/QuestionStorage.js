@@ -13,7 +13,7 @@ const QuestionStorage = () => {
 
   const [searchParams] = useSearchParams();
   const [searchPhraseTemp, setSearchPhraseTemp] = useState(searchParams.get('q') ? searchParams.get('q') : '');
-  const [searchPhrase, setSearchPhrase] = useState(searchParams.get('q') ? searchParams.get('q') : '');
+  const [searchPhrase, setSearchPhrase] = useState(searchParams.get('q') ? searchParams.get('q') : null);
   const [questionsCount, setQuestionsCount] = useState(0);
   const handleStorageChange = () => {
     const newQuestionsCount = localStorage.getItem('questionsCount');

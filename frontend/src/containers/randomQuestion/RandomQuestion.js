@@ -4,14 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const fetchRandomQuestion = (setSlug) => {
-  const params = {
-    language: 'pl',
-    random: true,
-  }
-  if (localStorage.getItem('selectedCategories')) {
-    params.categories = JSON.parse(localStorage.getItem('selectedCategories')).join(',');
-  }
-  axios.get('/questions/', { params: params })
+  axios.get('/questions/?language=pl&random=true')
     .then(response => {
       const data = response.data;
       const q = data.results[0];

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import fetchUserInfo from "../../functions/userInfo";
 import { useState } from "react";
 
-const AddComment = ({ source, objectId, refresh, setRefresh }) => {
+const AddComment = ({ questionId, refresh, setRefresh }) => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [userName, setUserName] = useState(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).first_name : null);
   window.addEventListener('storage', () => {
@@ -12,7 +12,7 @@ const AddComment = ({ source, objectId, refresh, setRefresh }) => {
   });
 
   const onSubmit = (data) => {
-    data.question = objectId;
+    data.question = questionId;
     axios.post('/question-comments/', data).then((response) => {
       if (response.status === 201 && data.name) {
         fetchUserInfo();
