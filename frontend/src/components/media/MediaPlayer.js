@@ -6,7 +6,7 @@ const Video = ({ className, src }) => {
   const [showVideo, setShowVideo] = useState(false);
   return (
     showVideo ?
-      <video className="media" autoPlay><source src={src} /></video>
+      <video disablePictureInPicture className="media" autoPlay><source src={src} /></video>
       :
       <Image onClick={() => setShowVideo(true)} className={className} title="Kliknij, aby wyświetlić film" src="https://placehold.co/600x400?text=Kliknij,+aby+wyświetlić+film." fluid />
   );

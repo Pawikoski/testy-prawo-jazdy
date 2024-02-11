@@ -6,7 +6,7 @@ import { useState, Suspense } from "react";
 import CommentList from "./CommentList";
 import { Spinner, Form } from "react-bootstrap";
 
-const CommentSection = ({ questionId }) => {
+const CommentSection = ({ source, objectId }) => {
   const [refresh, setRefresh] = useState(0);
 
   return (
@@ -32,9 +32,9 @@ const CommentSection = ({ questionId }) => {
             <Spinner className="mx-uato" animation="border" role="status"><span className="visually-hidden">Ładowanie...</span></Spinner>
           </div>
         }>
-        <CommentList questionId={questionId} refresh={refresh} setRefresh={setRefresh} />
+        <CommentList source={source} objectId={objectId} refresh={refresh} setRefresh={setRefresh} />
       </Suspense>
-      <AddComment questionId={questionId} refresh={refresh} setRefresh={setRefresh} />
+      <AddComment source={source} objectId={objectId} refresh={refresh} setRefresh={setRefresh} />
     </section>
   );
 }

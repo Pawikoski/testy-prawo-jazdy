@@ -69,7 +69,7 @@ const SingleQuestion = (slug) => {
         <Button disabled={ !question.next } href={question.next && buildSlug(question.next.text, question.next.question_no)}>Następne pytanie</Button>
       </div>
       <hr className='my-5' />
-      <CommentSection questionId={question.id} />
+      <CommentSection objectId={question.id} />
     </Container>
   );
 }
