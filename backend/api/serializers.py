@@ -66,12 +66,15 @@ class UserNameSerializer(serializers.ModelSerializer):
         fields = ["id", "first_name"]
 
 
-class QuestionCommentAnswerSerializer(serializers.ModelSerializer):
+class CommentAnswerSerializer(serializers.ModelSerializer):
     author = UserNameSerializer(read_only=True, source="user", required=False)
     likes = serializers.SerializerMethodField()
     dislikes = serializers.SerializerMethodField()
     liked = serializers.SerializerMethodField()
     disliked = serializers.SerializerMethodField()
+    
+    # question_id = serializers.IntegerField(required=False)
+    # article_id = serializers.IntegerField(required=False)
 
     def get_likes(self, obj):
         return obj.likes.count()
@@ -109,9 +112,11 @@ class QuestionCommentAnswerSerializer(serializers.ModelSerializer):
         extra_kwargs = {"user": {"write_only": True}}
 
 
-class QuestionCommentSerializer(serializers.ModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
+    question_id = serializers.IntegerField(required=False)
+    article_id = serializers.IntegerField(required=False)
     author = UserNameSerializer(read_only=True, source="user", required=False)
-    answers = QuestionCommentAnswerSerializer(
+    answers = CommentAnswerSerializer(
         many=True, read_only=True, source="answers_to_comment"
     )
     likes = serializers.SerializerMethodField()
@@ -137,9 +142,31 @@ class QuestionCommentSerializer(serializers.ModelSerializer):
             return obj.dislikes.filter(user=user).exists()
         return False
 
+    def validate(self, data):
+        print(data)
+        if not data.get("question_id") and not data.get("article_id"):
+            raise serializers.ValidationError(
+                "You must provide a question_id or article_id"
+            )
+        if data.get("question_id") and data.get("article_id"):
+            raise serializers.ValidationError(
+                "You cannot provide both question_id and article_id"
+            )
+        # kwargs = {"user": data["user"]}
+        kwargs = dict()
+
+        if data.get("question_id"):
+            kwargs["question_id"] = data["question_id"]
+        else:
+            kwargs["article_id"] = data["article_id"]
+
+        return data
+
     class Meta:
         model = Comment
         fields = [
+            "question_id",
+            "article_id",
             "id",
             "author",
             "user",

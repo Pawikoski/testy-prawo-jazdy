@@ -8,6 +8,13 @@ import Sidebar from "./Sidebar";
 import CommentSection from "../../components/comments/CommentSection";
 
 const Article = () => {
+  const data = {
+    id: 1,
+    title: "Lorem ipsum",
+    content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus qui voluptatum necessitatibus quo, quod voluptatem quisquam culpa earum eos ipsum eaque cumque ex recusandae et a doloribus. Error, nulla aut?",
+    date: "January 1, 2023",
+  }
+
   return (
     <Container>
       <Row>
@@ -21,7 +28,7 @@ const Article = () => {
             <Image src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" />
           </Row>
           <article className="py-4">
-            <h3>Lorem ipsum</h3>
+            <h3>{data.title}</h3>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus qui voluptatum necessitatibus quo, quod voluptatem quisquam culpa earum eos ipsum eaque cumque ex recusandae et a doloribus. Error, nulla aut?</p>
             <h3>Lorem ipsum</h3>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus qui voluptatum necessitatibus quo, quod voluptatem quisquam culpa earum eos ipsum eaque cumque ex recusandae et a doloribus. Error, nulla aut?</p>
@@ -32,7 +39,7 @@ const Article = () => {
             <div>Poprzedni wpis <a href="/kategoria3/tytul-5">"tytuł artykułu"</a></div>
             <div>Następny wpis <a href="/kategoria3/tytul-5">"tytuł artykułu"</a></div>
           </div>
-          <CommentSection />
+          <CommentSection source="article" objectId={data.id} />
         </Col>
         <Sidebar />
       </Row>

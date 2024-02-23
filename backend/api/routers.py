@@ -3,8 +3,8 @@ from .viewsets import (
     CategoryViewSet,
     ContactMessageViewSet,
     UserViewSet,
-    QuestionCommentViewSet,
-    QuestionCommentAnswerViewSet,
+    CommentViewSet,
+    CommentAnswerViewSet,
     LikeViewset,
     DislikeViewset,
     QuestionCountView
@@ -15,12 +15,12 @@ router = routers.DefaultRouter()
 
 
 router.register(
-    "question-comments", QuestionCommentViewSet, basename="question-comments"
+    "comments", CommentViewSet, basename="comments"
 )
 router.register(
-    "question-comment-answers",
-    QuestionCommentAnswerViewSet,
-    basename="question-comment-answers",
+    "comment-answers",
+    CommentAnswerViewSet,
+    basename="comment-answers",
 )
 router.register('question-count', QuestionCountView, basename='question-count')
 

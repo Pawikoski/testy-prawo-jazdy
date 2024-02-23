@@ -46,7 +46,7 @@ const SingleComment = ({ commentId, comment, setRefresh, refresh, commentType, s
   const { register, handleSubmit, reset } = useForm();
   const onSubmit = (data) => {
     data.comment = commentId;
-    axios.post('/question-comment-answers/', data).then((response) => {
+    axios.post('/comment-answers/', data).then((response) => {
       if (response.status === 201 && data.name) {
         fetchUserInfo();
       }

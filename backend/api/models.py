@@ -96,7 +96,9 @@ class UserStatictics(models.Model):
 
 
 class UserAnswer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_answers")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="user_answers"
+    )
     question = models.ForeignKey(
         Question, on_delete=models.CASCADE, related_name="user_answers"
     )
@@ -114,7 +116,9 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     banner = models.ImageField(upload_to="articles/banners", blank=True, null=True)
-    category = models.ForeignKey(ArticleCategory, on_delete=models.CASCADE, related_name="articles")
+    category = models.ForeignKey(
+        ArticleCategory, on_delete=models.CASCADE, related_name="articles"
+    )
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -135,9 +139,19 @@ class Comment(models.Model):
         User, on_delete=models.CASCADE, null=True, blank=True, related_name="comments"
     )
     question = models.ForeignKey(
-        Question, on_delete=models.CASCADE, related_name="comments"
+        Question,
+        on_delete=models.CASCADE,
+        related_name="comments",
+        null=True,
+        blank=True,
     )
-    # article = models.ForeignKey() ## TODO:
+    article = models.ForeignKey(
+        Article,
+        on_delete=models.CASCADE,
+        related_name="comments",
+        null=True,
+        blank=True,
+    )
     status = models.CharField(max_length=10, choices=COMMENT_STATUS, default="pending")
     text = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
@@ -151,7 +165,11 @@ class Comment(models.Model):
 
 class CommentAnswer(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, blank=True, related_name="answers_to_comment"
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="answers_to_comment",
     )
     comment = models.ForeignKey(
         Comment, on_delete=models.CASCADE, related_name="answers_to_comment"
@@ -173,7 +191,11 @@ class Like(models.Model):
         Comment, on_delete=models.CASCADE, related_name="likes", null=True, blank=True
     )
     answer = models.ForeignKey(
-        CommentAnswer, on_delete=models.CASCADE, related_name="likes", null=True, blank=True
+        CommentAnswer,
+        on_delete=models.CASCADE,
+        related_name="likes",
+        null=True,
+        blank=True,
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -182,10 +204,18 @@ class Like(models.Model):
 class Dislike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dislikes")
     comment = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, related_name="dislikes", null=True, blank=True
+        Comment,
+        on_delete=models.CASCADE,
+        related_name="dislikes",
+        null=True,
+        blank=True,
     )
     answer = models.ForeignKey(
-        CommentAnswer, on_delete=models.CASCADE, related_name="dislikes", null=True, blank=True
+        CommentAnswer,
+        on_delete=models.CASCADE,
+        related_name="dislikes",
+        null=True,
+        blank=True,
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

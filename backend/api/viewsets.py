@@ -18,8 +18,8 @@ from .serializers import (
     UserSerializer,
     DislikeSerializer,
     LikeSerializer,
-    QuestionCommentSerializer,
-    QuestionCommentAnswerSerializer,
+    CommentSerializer,
+    CommentAnswerSerializer,
     SideQuestionSerializer,
 )
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
@@ -131,8 +131,8 @@ class UserViewSet(ModelViewSet):
         return Response(serializer.data)
 
 
-class QuestionCommentViewSet(ModelViewSet):
-    serializer_class = QuestionCommentSerializer
+class CommentViewSet(ModelViewSet):
+    serializer_class = CommentSerializer
     pagination_class = SmallResultsSetPagination
     queryset = Comment.objects.all()
     http_method_names = ["get", "post"]
@@ -143,12 +143,17 @@ class QuestionCommentViewSet(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         question_pk = request.query_params.get("qid", None)
-        if not question_pk:
+        article_pk = request.query_params.get("aid", None)
+        if question_pk and not article_pk:
+            self.queryset = self.queryset.filter(question__id=question_pk)
+        elif article_pk and not question_pk:
+            self.queryset = self.queryset.filter(article__id=article_pk)
+        else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        self.queryset = self.queryset.filter(question__id=question_pk)
         return super().list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
+        print("viewset", request.data)
         if request.user.is_authenticated:
             user = User.objects.get(id=request.user.id)
             if not request.user.first_name:
@@ -161,8 +166,8 @@ class QuestionCommentViewSet(ModelViewSet):
         return super().create(request, *args, **kwargs)
 
 
-class QuestionCommentAnswerViewSet(ModelViewSet):
-    serializer_class = QuestionCommentAnswerSerializer
+class CommentAnswerViewSet(ModelViewSet):
+    serializer_class = CommentAnswerSerializer
     queryset = CommentAnswer.objects.all()
     http_method_names = ["post"]
     permission_classes = [AllowAny]

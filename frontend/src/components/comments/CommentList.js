@@ -5,10 +5,11 @@ import { Pagination, Stack } from "@mui/material";
 import { useState } from "react";
 import NeedLogin from "../modals/NeedLogin";
 
-const CommentList = ({ questionId, refresh, setRefresh }) => {
+const CommentList = ({ source, objectId, refresh, setRefresh }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showNeedLogin, setShowNeedLogin] = useState(false);
-  const comments = useFetchQuestionComments(`/question-comments/?qid=${questionId}`, currentPage, refresh);
+  const url = `/comments/?${source[0]}id=${objectId}`
+  const comments = useFetchQuestionComments(url, currentPage, refresh);
 
   return (
     <>
